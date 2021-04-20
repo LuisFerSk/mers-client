@@ -3,7 +3,13 @@ import proyectoContext from "../../context/proyectos/proyectoContext";
 
 const NuevoProyecto = () => {
 	const proyectosContext = useContext(proyectoContext);
-	const { formulario, mostrarFormulario } = proyectosContext;
+	const {
+		formulario,
+		mostrarFormulario,
+		agregarProyecto,
+		mostrarError,
+		errorFormulario,
+	} = proyectosContext;
 
 	const [proyecto, setProyecto] = useState({
 		nombre: "",
@@ -21,11 +27,14 @@ const NuevoProyecto = () => {
 	const onSubmitProyecto = (e) => {
 		e.preventDefault();
 
-		if (isNaN(nombre) || nombre.trim("")) {
+		if (nombre === "") {
+			mostrarError();
 			return;
 		}
 
-		setProyecto({ nombre: nombre });
+		agregarProyecto(proyecto);
+
+		setProyecto({ nombre: "" });
 	};
 
 	return (
@@ -53,6 +62,10 @@ const NuevoProyecto = () => {
 						className="btn btn-primario btn-block"
 					/>
 				</form>
+			) : null}
+
+			{errorFormulario ? (
+				<p className="mensaje error">El nombre del Proyecto es obligatorio</p>
 			) : null}
 		</>
 	);
